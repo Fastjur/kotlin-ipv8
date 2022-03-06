@@ -10,12 +10,12 @@ abstract class BlockBuilder(
 ) {
     protected abstract fun update(builder: TrustChainBlock.Builder)
 
-    fun sign(): TrustChainBlock {
+    fun sign(timeWarpingToBlockWithHash: ByteArray? = null): TrustChainBlock {
         val builder = TrustChainBlock.Builder()
 
         update(builder)
 
-        val prevBlock = database.getLatest(myPeer.publicKey.keyToBin())
+        val prevBlock = if (timeWarpingToBlockWithHash != null) database.getBlockWithHash(timeWarpingToBlockWithHash) else database.getLatest(myPeer.publicKey.keyToBin())
         if (prevBlock != null) {
             builder.sequenceNumber = prevBlock.sequenceNumber + 1u
             builder.previousHash = prevBlock.calculateHash()

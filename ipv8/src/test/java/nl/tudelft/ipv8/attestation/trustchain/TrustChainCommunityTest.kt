@@ -11,9 +11,6 @@ import nl.tudelft.ipv8.attestation.trustchain.store.TrustChainStore
 import nl.tudelft.ipv8.attestation.trustchain.validation.TransactionValidator
 import nl.tudelft.ipv8.attestation.trustchain.validation.ValidationResult
 import nl.tudelft.ipv8.keyvault.JavaCryptoProvider
-import nl.tudelft.ipv8.keyvault.LibNaClPK
-import nl.tudelft.ipv8.keyvault.PublicKey
-import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.peerdiscovery.Network
 import org.junit.Assert
 import org.junit.Test

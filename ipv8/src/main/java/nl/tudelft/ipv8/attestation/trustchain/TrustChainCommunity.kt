@@ -9,7 +9,6 @@ import nl.tudelft.ipv8.messaging.Packet
 import nl.tudelft.ipv8.util.random
 import nl.tudelft.ipv8.attestation.trustchain.payload.*
 import nl.tudelft.ipv8.attestation.trustchain.store.TrustChainStore
-import nl.tudelft.ipv8.attestation.trustchain.validation.ValidationErrors
 import nl.tudelft.ipv8.keyvault.defaultCryptoProvider
 import nl.tudelft.ipv8.messaging.Address
 import nl.tudelft.ipv8.util.toHex
@@ -189,9 +188,10 @@ open class TrustChainCommunity(
     fun createProposalBlock(
         blockType: String,
         transaction: TrustChainTransaction,
-        publicKey: ByteArray
+        publicKey: ByteArray,
+        timeWarpingToBlockID: ByteArray? = null
     ): TrustChainBlock {
-        val block = ProposalBlockBuilder(myPeer, database, blockType, transaction, publicKey).sign()
+        val block = ProposalBlockBuilder(myPeer, database, blockType, transaction, publicKey).sign(timeWarpingToBlockID)
 
         onBlockCreated(block)
 
@@ -245,9 +245,9 @@ open class TrustChainCommunity(
 
         logger.info { "Signed block, validation result: $validation" }
 
-        if (validation !is ValidationResult.PartialNext && validation !is ValidationResult.Valid) {
-            throw RuntimeException("Signed block did not validate")
-        }
+//        if (validation !is ValidationResult.PartialNext && validation !is ValidationResult.Valid) {
+//            throw RuntimeException("Signed block did not validate")
+//        }
 
         val peer = network.getVerifiedByPublicKeyBin(block.linkPublicKey)
         if (peer != null) {
